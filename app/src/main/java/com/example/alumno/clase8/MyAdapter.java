@@ -3,6 +3,7 @@ package com.example.alumno.clase8;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import java.util.List;
 
@@ -42,5 +43,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>
     @Override
     public int getItemCount() {
         return this.listaNoticias.size();
+    }
+
+    public void setLista(List<Noticias> lista )
+    {
+        this.listaNoticias = lista;
     }
 }

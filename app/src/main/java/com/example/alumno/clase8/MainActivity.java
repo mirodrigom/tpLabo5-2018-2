@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 
 import java.util.ArrayList;
@@ -21,11 +22,11 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         setContentView(R.layout.activity_main);
 
         /* Para probar */
-        Noticias n1 = new Noticias("titulo","descripcion","image","fecha","fuente","categoria");
-        Noticias n2 = new Noticias("titulo","descripcion","image","fecha","fuente","categoria");
-        Noticias n3 = new Noticias("titulo","descripcion","image","fecha","fuente","categoria");
-        Noticias n4 = new Noticias("titulo","descripcion","image","fecha","fuente","categoria");
-        Noticias n5 = new Noticias("titulo","descripcion","image","fecha","fuente","categoria");
+        Noticias n1 = new Noticias("titulo","descripcion","image","fecha","fuente","categoria","urldestino");
+        Noticias n2 = new Noticias("titulo","descripcion","image","fecha","fuente","categoria","urldestino");
+        Noticias n3 = new Noticias("titulo","descripcion","image","fecha","fuente","categoria","urldestino");
+        Noticias n4 = new Noticias("titulo","descripcion","image","fecha","fuente","categoria","urldestino");
+        Noticias n5 = new Noticias("titulo","descripcion","image","fecha","fuente","categoria","urldestino");
         this.listaNoticias = new ArrayList<Noticias>();
         this.listaNoticias.add(n1);
         this.listaNoticias.add(n2);
@@ -36,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         this.adapter = new MyAdapter(this.listaNoticias,this);
         rv.setAdapter(this.adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
+        Handler handler = new Handler(this);
+        Hilos hiloUno = new Hilos("lo-ultimo",handler);
+        hiloUno.start();
     }
 
 
@@ -44,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
 
         if( msg.arg1 == 1)
         {
+            this.adapter.setLista((List<Noticias>) msg.obj);
+            this.adapter.notifyDataSetChanged();
+
 
         }
         return false;

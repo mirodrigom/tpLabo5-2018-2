@@ -13,7 +13,16 @@ public class Noticias {
     private String categoria;
     private String urlDestino;
 
-    public Noticias(){}
+    public Noticias()
+    {
+        this.titulo = "";
+        this.descripcion = "";
+        this.imageUrl = "";
+        this.fecha = "";
+        this.fuente = "";
+        this.categoria = "";
+        this.urlDestino = "";
+    }
 
     public Noticias(String tit, String des, String img, String fec, String fue,String cat, String urlDestino)
     {

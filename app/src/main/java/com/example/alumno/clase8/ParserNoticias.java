@@ -44,23 +44,37 @@ public class ParserNoticias {
                         if("item".equals(xpp.getName()))
                         {
                             n = new Noticias();
-                        }else if("title".equals(xpp.getName()))
-                        {
-                            n.setTitulo(xpp.nextText());
-                            Log.d("TAG","START FIRSTNAME");
-                        }else if("last_name".equals(xpp.getName()))
-                        {
-
-                            Log.d("TAG","START LASTNAME");
-                        }else if("phone".equals(xpp.getName()))
-                        {
-
-                            Log.d("TAG","START PHONE");
                         }
-
+                        if(n != null)
+                        {
+                            if("title".equals(xpp.getName()))
+                            {
+                                n.setTitulo(xpp.nextText());
+                                Log.d("TAG","START TITLE");
+                            }else if("link".equals(xpp.getName()))
+                            {
+                                n.setUrlDestino(xpp.nextText());
+                                Log.d("TAG","START LINK");
+                            }else if("description".equals(xpp.getName()))
+                            {
+                                n.setDescripcion(xpp.nextText());
+                                Log.d("TAG","START DESCRIPTION");
+                            }else if("pubDate".equals(xpp.getName()))
+                            {
+                                n.setFecha(xpp.nextText());
+                                Log.d("TAG","START PUBDATE");
+                            }else if("dc:creator".equals(xpp.getName()))
+                            {
+                                n.setFecha(xpp.getAttributeValue(null,"url"));
+                                Log.d("TAG","START CREATOR");
+                            }else if("enclosure".equals(xpp.getName()))
+                            {
+                                n.setImageUrl(xpp.getAttributeValue(null,"url"));
+                            }
+                        }
                         break;
                     case XmlPullParser.END_TAG:
-                        if("persona".equals(xpp.getName()))
+                        if("item".equals(xpp.getName()))
                         {
                             listaNoticias.add(n);
                         }

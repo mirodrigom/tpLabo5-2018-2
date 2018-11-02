@@ -26,9 +26,8 @@ public class Hilos extends Thread {
         msg.arg1 = 1;
         Conexion conexion = new Conexion();
         byte[] info = conexion.obtenerString("https://www.clarin.com/rss/"+ this.genero +"/");
-
         msg.obj = ParserNoticias.getNoticias(new String(info));
 
-        msg.setTarget(this.mainActivtyHandler);
+        this.mainActivtyHandler.sendMessage(msg);
     }
 }
