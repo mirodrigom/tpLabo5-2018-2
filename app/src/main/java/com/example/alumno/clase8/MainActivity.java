@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
 
     private List<Noticias> listaNoticias;
     private MyAdapter adapter;
+    public Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +38,8 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         this.adapter = new MyAdapter(this.listaNoticias,this);
         rv.setAdapter(this.adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        Handler handler = new Handler(this);
-        Hilos hiloUno = new Hilos("lo-ultimo",handler);
+        this.handler = new Handler(this);
+        Hilos hiloUno = new Hilos("lo-ultimo",handler,"xml");
         hiloUno.start();
     }
 
@@ -50,8 +51,10 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         {
             this.adapter.setLista((List<Noticias>) msg.obj);
             this.adapter.notifyDataSetChanged();
-
-
+        }else if( msg.arg1 == 2)
+        {
+            this.adapter.setImage(msg.arg2,(byte[]) msg.obj);
+            this.adapter.notifyItemChanged(msg.arg2);
         }
         return false;
     }

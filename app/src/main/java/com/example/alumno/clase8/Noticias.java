@@ -8,7 +8,9 @@ public class Noticias {
     private String titulo;
     private String descripcion;
     private String imageUrl;
-    private String fecha;
+    private byte[] imageByte;
+    private boolean buscando;
+    private String fecha; // SimpleDateFormat usar de java.utils
     private String fuente;
     private String categoria;
     private String urlDestino;
@@ -22,6 +24,8 @@ public class Noticias {
         this.fuente = "";
         this.categoria = "";
         this.urlDestino = "";
+        this.imageByte = null;
+        this.buscando = false;
     }
 
     public Noticias(String tit, String des, String img, String fec, String fue,String cat, String urlDestino)
@@ -33,6 +37,8 @@ public class Noticias {
         this.fuente = fue;
         this.categoria = cat;
         this.urlDestino = urlDestino;
+        this.imageByte = null;
+        this.buscando = false;
     }
 
     public String getTitulo() {
@@ -90,4 +96,21 @@ public class Noticias {
     public void setUrlDestino(String urlDestino) {
         this.urlDestino = urlDestino;
     }
+
+    public byte[] getImageByte() {
+        return imageByte;
+    }
+
+    public void setImageByte(byte[] imageByte) {
+        this.imageByte = imageByte;
+    }
+
+    public boolean getBuscando() {
+        return buscando;
+    }
+
+    public void setBuscando(boolean buscando) {
+        this.buscando = buscando;
+    }
+
 }
