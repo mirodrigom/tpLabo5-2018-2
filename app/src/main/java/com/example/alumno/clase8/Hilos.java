@@ -35,22 +35,22 @@ public class Hilos extends Thread {
     public void run()
     {
         Message msg = new Message();
-        if(quebusco == "xml")
+        if(this.quebusco == "xml")
         {
             msg.arg1 = 1;
             Conexion conexion = new Conexion();
             byte[] info = conexion.obtenerString("https://www.clarin.com/rss/"+ this.url +"/");
             msg.obj = ParserNoticias.getNoticias(new String(info));
-        }else if(quebusco == "img")
+        }else if(this.quebusco == "img")
         {
-            Log.wtf("url",url);
-            Log.wtf("quebusco",quebusco);
+            Log.wtf("url",this.url);
+            Log.wtf("quebusco",this.quebusco);
             msg.arg1 = 2;
             msg.arg2 = this.position;
             Conexion conexion = new Conexion();
             byte[] info = conexion.obtenerString(this.url);
             msg.obj = info;
         }
-        this.elHandler.sendMessage(msg);
+            this.elHandler.sendMessage(msg);
     }
 }

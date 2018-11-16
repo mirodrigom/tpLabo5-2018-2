@@ -17,7 +17,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
     public TextView txtTitulo;
     public TextView txtFuente;
     public TextView txtFecha;
-    public TextView txtImageURL;
+    public ImageView imgNoticia;
     private int position;
 
     public MyViewHolder(View itemView) {
@@ -26,6 +26,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
         this.txtTitulo = (TextView) itemView.findViewById(R.id.txtTitulo);
         this.txtFuente = (TextView) itemView.findViewById(R.id.txtFuente);
         this.txtFecha = (TextView) itemView.findViewById(R.id.txtFecha);
+        this.imgNoticia = (ImageView) itemView.findViewById(R.id.imgNoticia);
         itemView.setOnClickListener(this);
     }
 

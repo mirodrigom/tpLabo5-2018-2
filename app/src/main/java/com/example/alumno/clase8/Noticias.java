@@ -1,5 +1,7 @@
 package com.example.alumno.clase8;
 
+import java.util.ArrayList;
+
 /**
  * Created by alumno on 01/11/2018.
  */
@@ -14,6 +16,7 @@ public class Noticias {
     private String fuente;
     private String categoria;
     private String urlDestino;
+    private String[] rssLista;
 
     public Noticias()
     {
@@ -26,6 +29,12 @@ public class Noticias {
         this.urlDestino = "";
         this.imageByte = null;
         this.buscando = false;
+        this.rssLista = null;
+    }
+
+    public void SetListaRss()
+    {
+        this.rssLista = new String[] {"Lo Ultimo","Politica","Mundo","Sociedad","Policiales","Ciudades","Opinion","Cartas al pais","Cultura","Rural","Economia","Tecnologia","Revista Ñ"};
     }
 
     public Noticias(String tit, String des, String img, String fec, String fue,String cat, String urlDestino)
@@ -39,6 +48,7 @@ public class Noticias {
         this.urlDestino = urlDestino;
         this.imageByte = null;
         this.buscando = false;
+        this.rssLista = null;
     }
 
     public String getTitulo() {
@@ -113,4 +123,15 @@ public class Noticias {
         this.buscando = buscando;
     }
 
+    public boolean isBuscando() {
+        return buscando;
+    }
+
+    public String[] getRssLista() {
+        return rssLista;
+    }
+
+    public void setRssLista(String[] rssLista) {
+        this.rssLista = rssLista;
+    }
 }
