@@ -1,6 +1,8 @@
 package com.example.alumno.clase8;
 
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by alumno on 01/11/2018.
@@ -12,18 +14,19 @@ public class Noticias {
     private String imageUrl;
     private byte[] imageByte;
     private boolean buscando;
-    private String fecha; // SimpleDateFormat usar de java.utils
+    private Date fecha; // SimpleDateFormat usar de java.utils
     private String fuente;
     private String categoria;
     private String urlDestino;
     private String[] rssLista;
+    private int MAXTITULO = 150;
 
     public Noticias()
     {
         this.titulo = "";
         this.descripcion = "";
         this.imageUrl = "";
-        this.fecha = "";
+        this.fecha = null;
         this.fuente = "";
         this.categoria = "";
         this.urlDestino = "";
@@ -32,12 +35,8 @@ public class Noticias {
         this.rssLista = null;
     }
 
-    public void SetListaRss()
-    {
-        this.rssLista = new String[] {"Lo Ultimo","Politica","Mundo","Sociedad","Policiales","Ciudades","Opinion","Cartas al pais","Cultura","Rural","Economia","Tecnologia","Revista Ñ"};
-    }
 
-    public Noticias(String tit, String des, String img, String fec, String fue,String cat, String urlDestino)
+    public Noticias(String tit, String des, String img, Date fec, String fue,String cat, String urlDestino)
     {
         this.titulo = tit;
         this.descripcion = des;
@@ -52,7 +51,12 @@ public class Noticias {
     }
 
     public String getTitulo() {
-        return titulo;
+
+        if(this.titulo.length() > this.MAXTITULO)
+        {
+            return this.titulo.substring(0,this.MAXTITULO) + "...";
+        }
+        return this.titulo;
     }
 
     public void setTitulo(String titulo) {
@@ -60,7 +64,21 @@ public class Noticias {
     }
 
     public String getDescripcion() {
-        return descripcion;
+        if(this.titulo.length() > 0)
+        {
+            int cantCaracteres = this.titulo.length() - this.MAXTITULO;
+            if(cantCaracteres < 0)
+            {
+                cantCaracteres = cantCaracteres * -1;
+            }
+            if(this.descripcion.length() > cantCaracteres)
+            {
+                return this.descripcion.substring(0,cantCaracteres) + "...";
+            }
+        }
+
+
+        return this.descripcion;
     }
 
     public void setDescripcion(String descripcion) {
@@ -76,11 +94,22 @@ public class Noticias {
     }
 
     public String getFecha() {
-        return fecha;
+        if(this.fecha == null) {
+            return null;
+        }
+        SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        return fmt.format(this.fecha);
     }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
+    public void setFecha(String fecha)
+    {
+        //Mon, 19 Nov 2018 19:03:52 -0300
+        SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
+        try {
+            this.fecha = format.parse(fecha);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getFuente() {

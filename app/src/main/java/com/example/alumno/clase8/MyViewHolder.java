@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+    public MainActivity mainActivity;
     public TextView txtDescripcion;
     public TextView txtTitulo;
     public TextView txtFuente;
@@ -20,13 +21,14 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
     public ImageView imgNoticia;
     private int position;
 
-    public MyViewHolder(View itemView) {
+    public MyViewHolder(View itemView,MainActivity mainActivity) {
         super(itemView);
         this.txtDescripcion = (TextView) itemView.findViewById(R.id.txtDescripcion);
         this.txtTitulo = (TextView) itemView.findViewById(R.id.txtTitulo);
         this.txtFuente = (TextView) itemView.findViewById(R.id.txtFuente);
         this.txtFecha = (TextView) itemView.findViewById(R.id.txtFecha);
         this.imgNoticia = (ImageView) itemView.findViewById(R.id.imgNoticia);
+        this.mainActivity = mainActivity;
         itemView.setOnClickListener(this);
     }
 
@@ -38,5 +40,6 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
     @Override
     public void onClick(View v) {
         Log.wtf("Abro el webview", "Posicion: " + String.valueOf(this.position));
+        mainActivity.abrirWebsite(this.position);
     }
 }

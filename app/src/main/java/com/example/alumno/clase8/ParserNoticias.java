@@ -14,11 +14,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.CheckedInputStream;
-
-/**
- * Created by alumno on 04/10/2018.
- */
 
 public class ParserNoticias {
 
@@ -65,7 +60,7 @@ public class ParserNoticias {
                                 Log.d("TAG","START PUBDATE");
                             }else if("dc:creator".equals(xpp.getName()))
                             {
-                                n.setFecha(xpp.getAttributeValue(null,"url"));
+                                n.setFuente(xpp.nextText());
                                 Log.d("TAG","START CREATOR");
                             }else if("enclosure".equals(xpp.getName()))
                             {

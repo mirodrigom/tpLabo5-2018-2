@@ -22,6 +22,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>
     private List<Noticias> listaNoticias;
     private MainActivity mainActivity;
     private Handler handler;
+    private List<Noticias> listaOriginal;
 
     public MyAdapter(List<Noticias> lista, MainActivity act)
     {
@@ -33,7 +34,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View vista = this.mainActivity.getLayoutInflater().from(this.mainActivity).inflate(R.layout.noticias,parent, false);
-        MyViewHolder myv = new MyViewHolder(vista);
+        MyViewHolder myv = new MyViewHolder(vista,this.mainActivity);
         return myv;
     }
 
@@ -69,8 +70,25 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>
         this.listaNoticias = lista;
     }
 
+    public void setListaOriginal(List<Noticias> lista )
+    {
+        this.listaOriginal = lista;
+    }
+
+    public List<Noticias> getListaOriginal()
+    {
+        return this.listaOriginal;
+    }
+
+    public List<Noticias> getLista()
+    {
+        return this.listaNoticias;
+    }
+
     public void setImage(int position,byte[] imageBytes)
     {
         this.listaNoticias.get(position).setImageByte(imageBytes);
     }
+
+
 }

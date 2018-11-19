@@ -1,5 +1,6 @@
 package com.example.alumno.clase8;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.MenuItemCompat;
@@ -11,6 +12,11 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,32 +25,21 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
 
     private List<Noticias> listaNoticias;
     private MyAdapter adapter;
+    private RecyclerView rv;
     public Handler handler;
+    private TextView txtMain;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /* Para probar */
-        /*
-        Noticias n1 = new Noticias("titulo","descripcion","image","fecha","fuente","categoria","urldestino");
-        Noticias n2 = new Noticias("titulo","descripcion","image","fecha","fuente","categoria","urldestino");
-        Noticias n3 = new Noticias("titulo","descripcion","image","fecha","fuente","categoria","urldestino");
-        Noticias n4 = new Noticias("titulo","descripcion","image","fecha","fuente","categoria","urldestino");
-        Noticias n5 = new Noticias("titulo","descripcion","image","fecha","fuente","categoria","urldestino");
-        */
+        this.txtMain = (TextView) findViewById(R.id.txtMain);
         this.listaNoticias = new ArrayList<Noticias>();
-        /*
-        this.listaNoticias.add(n1);
-        this.listaNoticias.add(n2);
-        this.listaNoticias.add(n3);
-        this.listaNoticias.add(n4);
-        this.listaNoticias.add(n5);
-        */
+
         this.handler = new Handler(this);
         Hilos hiloUno = new Hilos("lo-ultimo",handler,"xml");
         hiloUno.start();
-        RecyclerView rv = (RecyclerView) findViewById(R.id.rv);
+        this.rv = (RecyclerView) findViewById(R.id.rv);
         this.adapter = new MyAdapter(this.listaNoticias,this);
         rv.setAdapter(this.adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -83,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
         if( msg.arg1 == 1)
         {
             this.adapter.setLista((List<Noticias>) msg.obj);
+            this.adapter.setListaOriginal((List<Noticias>) msg.obj);
             this.adapter.notifyDataSetChanged();
         }else if( msg.arg1 == 2)
         {
@@ -95,17 +91,22 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        //Guardo la lista original x si esta null el string
-        //notify data set changed
-        //creo una lista nueva
         Log.wtf("Submit: ",query);
         List<Noticias> listaBuscada = new ArrayList<Noticias>();
-        for(Noticias noticia : this.listaNoticias)
+        for(Noticias noticia : this.adapter.getListaOriginal())
         {
-            if(noticia.getTitulo().contains(query))
+            if(noticia.getTitulo().toLowerCase().contains(query.toLowerCase()) || noticia.getDescripcion().toLowerCase().contains(query.toLowerCase()))
             {
-                //listaBuscada.
+                listaBuscada.add(noticia);
             }
+        }
+        if(! listaBuscada.isEmpty()){
+            this.adapter.setLista(listaBuscada);
+            this.adapter.notifyDataSetChanged();
+        }else{
+            this.rv.setVisibility(View.GONE);
+            this.txtMain.setText(R.string.NoEncontrado);
+            this.txtMain.setVisibility(View.VISIBLE);
         }
 
         return false;
@@ -113,7 +114,24 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        Log.wtf("cambiotexto:",newText);
+        if(newText.length() >= 3) {
+            this.onQueryTextSubmit(newText);
+        }else if(newText.length() == 0){
+            this.rv.setVisibility(View.VISIBLE);
+            this.txtMain.setVisibility(View.GONE);
+            this.adapter.setLista(this.adapter.getListaOriginal());
+            this.adapter.notifyDataSetChanged();
+        }
         return false;
     }
+
+    public void abrirWebsite(int posicion)
+    {
+        Intent i = new Intent(this,WebActivity.class);
+        i.putExtra("url",this.adapter.getLista().get(posicion).getUrlDestino());
+        i.putExtra("titulo",this.adapter.getLista().get(posicion).getTitulo());
+        i.putExtra("descripcion",this.adapter.getLista().get(posicion).getDescripcion());
+        startActivity(i);
+    }
+
 }

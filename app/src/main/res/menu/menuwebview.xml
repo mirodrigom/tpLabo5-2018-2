@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".WebActivity"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
+
+    <item android:id="@+id/share"
+        android:title="Compartir"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_share">
+    </item>
+</menu>

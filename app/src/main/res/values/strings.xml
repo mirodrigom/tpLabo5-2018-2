@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">Clase8</string>
+    <string name="app_name">Noticias</string>
     <string name="descripcion">Descripcion</string>
     <string name="titulo">Titulo</string>
     <string name="buscar">Buscar</string>
     <string name="fuente">Fuente</string>
     <string name="fecha">Fecha</string>
+    <string name="NoEncontrado">No se han encontrado noticias, con ese filtro.</string>
 </resources>
