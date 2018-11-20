@@ -33,7 +33,6 @@ public class ParserNoticias {
                 switch (event)
                 {
                     case XmlPullParser.START_DOCUMENT:
-                        Log.d("TAG","START DOCUMENT");
                         break;
                     case XmlPullParser.START_TAG:
                         if("item".equals(xpp.getName()))
@@ -45,23 +44,19 @@ public class ParserNoticias {
                             if("title".equals(xpp.getName()))
                             {
                                 n.setTitulo(xpp.nextText());
-                                Log.d("TAG","START TITLE");
                             }else if("link".equals(xpp.getName()))
                             {
                                 n.setUrlDestino(xpp.nextText());
-                                Log.d("TAG","START LINK");
                             }else if("description".equals(xpp.getName()))
                             {
                                 n.setDescripcion(xpp.nextText());
-                                Log.d("TAG","START DESCRIPTION");
                             }else if("pubDate".equals(xpp.getName()))
                             {
                                 n.setFecha(xpp.nextText());
-                                Log.d("TAG","START PUBDATE");
-                            }else if("dc:creator".equals(xpp.getName()))
+
+                            }else if("creator".equals(xpp.getName()))
                             {
                                 n.setFuente(xpp.nextText());
-                                Log.d("TAG","START CREATOR");
                             }else if("enclosure".equals(xpp.getName()))
                             {
                                 n.setImageUrl(xpp.getAttributeValue(null,"url"));
@@ -73,10 +68,8 @@ public class ParserNoticias {
                         {
                             listaNoticias.add(n);
                         }
-                        Log.d("TAG","FIN TAG");
                         break;
                     case XmlPullParser.END_DOCUMENT:
-                        Log.d("TAG","FIN DOCUMENT");
                         break;
                 }
                 event = xpp.next();

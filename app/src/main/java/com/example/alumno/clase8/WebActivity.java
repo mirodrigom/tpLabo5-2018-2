@@ -12,9 +12,10 @@ import android.webkit.WebViewClient;
 
 public class WebActivity extends AppCompatActivity {
 
-    String url;
-    String titulo;
-    String descripcion;
+    private String url;
+    private String titulo;
+    private String descripcion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,10 +32,6 @@ public class WebActivity extends AppCompatActivity {
         WebSettings ws = wv.getSettings();
         ws.setJavaScriptEnabled(true);
         wv.loadUrl(url);
-
-        //Flowinactionbutton del share
-        //boton de back en el menu
-        //
     }
 
     @Override
@@ -47,7 +44,7 @@ public class WebActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if( id == android.R.id.home)
+        if( id == android.R.id.home )
         {
             finish();
         }else {

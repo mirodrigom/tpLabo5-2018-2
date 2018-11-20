@@ -42,10 +42,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.txtDescripcion.setText(this.listaNoticias.get(position).getDescripcion());
         holder.txtTitulo.setText(this.listaNoticias.get(position).getTitulo());
-        holder.txtFuente.setText(this.listaNoticias.get(position).getFuente());
+
+
         holder.txtFecha.setText(this.listaNoticias.get(position).getFecha());
         holder.setPosition(position);
-
+        //ImagenFuente
+        if("clarin.com".equalsIgnoreCase(this.listaNoticias.get(position).getFuente()))
+        {
+            holder.imgFuente.setImageResource(R.drawable.clarin);
+        }
+        //ImagenNoticia
         if(this.listaNoticias.get(position).getBuscando() == false)
         {
             if(this.listaNoticias.get(position).getImageByte() == null)
@@ -57,7 +63,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>
                 holder.imgNoticia.setImageBitmap(bitmap);
             }
         }
-        //Falta imagen, y fecha parsear
     }
 
     @Override

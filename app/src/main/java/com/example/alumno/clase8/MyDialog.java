@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.RadioButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,26 +23,27 @@ import org.json.JSONObject;
 public class MyDialog extends DialogFragment implements Dialog.OnClickListener {
 
     public View v;
-    public CheckBox cboxUltimo;
-    public CheckBox cboxPolitica;
-    public CheckBox cboxMundo;
-    public CheckBox cboxSociedad;
+    public RadioButton cboxUltimo;
+    public RadioButton cboxPolitica;
+    public RadioButton cboxMundo;
+    public RadioButton cboxSociedad;
     public JSONArray listaChecked;
+    private iMyDialog listenerDialog;
 
     private void setAttributes()
     {
         this.v = LayoutInflater.from(getActivity()).inflate(R.layout.rss_items,null);
-        this.cboxUltimo = (CheckBox) v.findViewById(R.id.lo_ultimo);
+        this.cboxUltimo = (RadioButton) v.findViewById(R.id.lo_ultimo);
         this.cboxUltimo.setChecked(false);
-        this.cboxPolitica = (CheckBox) v.findViewById(R.id.politica);
+        this.cboxPolitica = (RadioButton) v.findViewById(R.id.politica);
         this.cboxPolitica.setChecked(false);
-        this.cboxMundo = (CheckBox) v.findViewById(R.id.mundo);
+        this.cboxMundo = (RadioButton) v.findViewById(R.id.mundo);
         this.cboxMundo.setChecked(false);
-        this.cboxSociedad = (CheckBox) v.findViewById(R.id.sociedad);
+        this.cboxSociedad = (RadioButton) v.findViewById(R.id.sociedad);
         this.cboxSociedad.setChecked(false);
         this.listaChecked =  new JSONArray();
-    }
 
+    }
     private void getPreferences()
     {
         SharedPreferences prefs = getContext().getSharedPreferences("configuracionCompartida", Context.MODE_PRIVATE);
@@ -76,7 +78,6 @@ public class MyDialog extends DialogFragment implements Dialog.OnClickListener {
             }
         }
     }
-
     private void setSharedPreferences(JSONArray lista)
     {
         SharedPreferences prefs = getContext().getSharedPreferences("configuracionCompartida", Context.MODE_PRIVATE);
@@ -86,15 +87,25 @@ public class MyDialog extends DialogFragment implements Dialog.OnClickListener {
     }
 
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            this.listenerDialog = (iMyDialog) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString());
+        }
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Seleccionar RSS");
+        builder.setTitle(R.string.selectRss);
         this.setAttributes();
+        getPreferences();
         builder.setView(this.v);
-        builder.setPositiveButton("Guardar",this);
-        builder.setNegativeButton("Cancelar",this);
+        builder.setPositiveButton(R.string.save,this);
+        builder.setNegativeButton(R.string.cancel,this);
         AlertDialog ad = builder.create();
         return ad;
     }
@@ -142,9 +153,13 @@ public class MyDialog extends DialogFragment implements Dialog.OnClickListener {
                 }
             }
 
+
+            setSharedPreferences(this.listaChecked);
+            this.listenerDialog.onChangeRss(true);
+
         }else if(which == Dialog.BUTTON_NEGATIVE)
         {
-
+            this.listenerDialog.onChangeRss(false);
         }
     }
 

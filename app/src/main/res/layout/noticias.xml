@@ -32,25 +32,37 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtTitulo"
                     android:textStyle="bold"
-                    android:text="@string/titulo"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtDescripcion"
-                    android:text="@string/descripcion"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtFuente"
-                    android:text="@string/fuente"/>
+                    android:text="@string/titulo"
+                    android:gravity="top"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/txtFecha"
-                    android:text="@string/fecha"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    />
+                    android:id="@+id/txtDescripcion"
+                    android:text="@string/descripcion"
+                    android:gravity="top"/>
+
+                <RelativeLayout
+                    android:id="@+id/fechayfuente"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtFecha"
+                        android:text="@string/fecha"
+                        android:layout_alignParentLeft="true" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/imgFuente"
+                        android:layout_alignParentRight="true"/>
+                </RelativeLayout>
+
+
             </LinearLayout>
 
 

@@ -1,5 +1,6 @@
 package com.example.alumno.clase8;
 
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -16,7 +17,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
     public MainActivity mainActivity;
     public TextView txtDescripcion;
     public TextView txtTitulo;
-    public TextView txtFuente;
+    public ImageView imgFuente;
     public TextView txtFecha;
     public ImageView imgNoticia;
     private int position;
@@ -25,7 +26,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
         super(itemView);
         this.txtDescripcion = (TextView) itemView.findViewById(R.id.txtDescripcion);
         this.txtTitulo = (TextView) itemView.findViewById(R.id.txtTitulo);
-        this.txtFuente = (TextView) itemView.findViewById(R.id.txtFuente);
+        this.imgFuente = (ImageView) itemView.findViewById(R.id.imgFuente);
         this.txtFecha = (TextView) itemView.findViewById(R.id.txtFecha);
         this.imgNoticia = (ImageView) itemView.findViewById(R.id.imgNoticia);
         this.mainActivity = mainActivity;
@@ -39,7 +40,6 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        Log.wtf("Abro el webview", "Posicion: " + String.valueOf(this.position));
         mainActivity.abrirWebsite(this.position);
     }
 }

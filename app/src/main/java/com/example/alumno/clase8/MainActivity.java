@@ -1,6 +1,8 @@
 package com.example.alumno.clase8;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.MenuItemCompat;
@@ -13,37 +15,64 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Handler.Callback,SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity implements Handler.Callback,SearchView.OnQueryTextListener,iMyDialog {
 
     private List<Noticias> listaNoticias;
     private MyAdapter adapter;
     private RecyclerView rv;
     public Handler handler;
     private TextView txtMain;
+    private String url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         this.txtMain = (TextView) findViewById(R.id.txtMain);
         this.listaNoticias = new ArrayList<Noticias>();
-
         this.handler = new Handler(this);
-        Hilos hiloUno = new Hilos("lo-ultimo",handler,"xml");
-        hiloUno.start();
+        this.comenzarHilo();
         this.rv = (RecyclerView) findViewById(R.id.rv);
         this.adapter = new MyAdapter(this.listaNoticias,this);
         rv.setAdapter(this.adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
+    }
+
+    private void getPreferences()
+    {
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences("configuracionCompartida", Context.MODE_PRIVATE);
+        String listaPreferences = prefs.getString("listaChecked",null);
+        JSONArray listaChecked = new JSONArray();
+        if(listaPreferences != null)
+        {
+            try {
+                listaChecked = new JSONArray(listaPreferences);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            for (int i = 0; i < listaChecked.length(); i++) {
+                try {
+                    JSONObject checkbox = listaChecked.getJSONObject(i);
+                    this.url = checkbox.names().get(0).toString().replace(" ","-").toLowerCase();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else {
+            this.url = "lo-ultimo";
+        }
     }
 
     /* Menu */
@@ -61,12 +90,8 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.rss)
         {
-            Log.wtf("Seleccionado", "RSS");
             MyDialog md = new MyDialog();
             md.show(getSupportFragmentManager(),"");
-        }else if(item.getItemId() == R.id.configuracion)
-        {
-            Log.wtf("Seleccionado", "Configuracion");
         }
 
         return super.onOptionsItemSelected(item);
@@ -75,14 +100,14 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
     @Override
     public boolean handleMessage(Message msg) {
 
-        if( msg.arg1 == 1)
-        {
-            this.adapter.setLista((List<Noticias>) msg.obj);
-            this.adapter.setListaOriginal((List<Noticias>) msg.obj);
-            this.adapter.notifyDataSetChanged();
+        if( msg.arg1 == 1) {
+            if (msg.obj != null) {
+                this.adapter.setLista((List<Noticias>) msg.obj);
+                this.adapter.setListaOriginal((List<Noticias>) msg.obj);
+                this.adapter.notifyDataSetChanged();
+            }
         }else if( msg.arg1 == 2)
         {
-            Log.wtf("handle","llego");
             this.adapter.setImage(msg.arg2,(byte[]) msg.obj);
             this.adapter.notifyItemChanged(msg.arg2);
         }
@@ -91,13 +116,12 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        Log.wtf("Submit: ",query);
         List<Noticias> listaBuscada = new ArrayList<Noticias>();
-        for(Noticias noticia : this.adapter.getListaOriginal())
-        {
-            if(noticia.getTitulo().toLowerCase().contains(query.toLowerCase()) || noticia.getDescripcion().toLowerCase().contains(query.toLowerCase()))
-            {
-                listaBuscada.add(noticia);
+        if(this.adapter.getListaOriginal() != null) {
+            for (Noticias noticia : this.adapter.getListaOriginal()) {
+                if (noticia.getTitulo().toLowerCase().contains(query.toLowerCase()) || noticia.getDescripcion().toLowerCase().contains(query.toLowerCase())) {
+                    listaBuscada.add(noticia);
+                }
             }
         }
         if(! listaBuscada.isEmpty()){
@@ -119,7 +143,9 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
         }else if(newText.length() == 0){
             this.rv.setVisibility(View.VISIBLE);
             this.txtMain.setVisibility(View.GONE);
-            this.adapter.setLista(this.adapter.getListaOriginal());
+            if(this.adapter.getListaOriginal() != null) {
+                this.adapter.setLista(this.adapter.getListaOriginal());
+            }
             this.adapter.notifyDataSetChanged();
         }
         return false;
@@ -134,4 +160,18 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
         startActivity(i);
     }
 
+    @Override
+    public void onChangeRss(Boolean val) {
+        if(val == true)
+        {
+            this.comenzarHilo();
+        }
+    }
+
+    public void comenzarHilo()
+    {
+        getPreferences();
+        Hilos hiloUno = new Hilos(this.url,handler,"xml");
+        hiloUno.start();
+    }
 }

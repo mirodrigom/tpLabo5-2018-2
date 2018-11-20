@@ -6,4 +6,7 @@
     <string name="fuente">Fuente</string>
     <string name="fecha">Fecha</string>
     <string name="NoEncontrado">No se han encontrado noticias, con ese filtro.</string>
+    <string name="selectRss">Seleccionar RSS</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
 </resources>

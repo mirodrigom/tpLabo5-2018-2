@@ -40,11 +40,11 @@ public class Hilos extends Thread {
             msg.arg1 = 1;
             Conexion conexion = new Conexion();
             byte[] info = conexion.obtenerString("https://www.clarin.com/rss/"+ this.url +"/");
-            msg.obj = ParserNoticias.getNoticias(new String(info));
+            if(info != null) {
+                msg.obj = ParserNoticias.getNoticias(new String(info));
+            }
         }else if(this.quebusco == "img")
         {
-            Log.wtf("url",this.url);
-            Log.wtf("quebusco",this.quebusco);
             msg.arg1 = 2;
             msg.arg2 = this.position;
             Conexion conexion = new Conexion();

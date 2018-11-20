@@ -11,14 +11,8 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         />
 
-
-    <item android:id="@+id/configuracion"
-        android:title="Configuracion"
-        android:orderInCategory="100"
-        />
-
     <item android:id="@+id/rss"
         android:title="RSS"
-        android:orderInCategory="101"
+        android:orderInCategory="100"
         />
 </menu>
