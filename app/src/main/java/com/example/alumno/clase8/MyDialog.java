@@ -23,23 +23,23 @@ import org.json.JSONObject;
 public class MyDialog extends DialogFragment implements Dialog.OnClickListener {
 
     public View v;
-    public RadioButton cboxUltimo;
-    public RadioButton cboxPolitica;
-    public RadioButton cboxMundo;
-    public RadioButton cboxSociedad;
+    public CheckBox cboxUltimo;
+    public CheckBox cboxPolitica;
+    public CheckBox cboxMundo;
+    public CheckBox cboxSociedad;
     public JSONArray listaChecked;
     private iMyDialog listenerDialog;
 
     private void setAttributes()
     {
         this.v = LayoutInflater.from(getActivity()).inflate(R.layout.rss_items,null);
-        this.cboxUltimo = (RadioButton) v.findViewById(R.id.lo_ultimo);
+        this.cboxUltimo = (CheckBox) v.findViewById(R.id.lo_ultimo);
         this.cboxUltimo.setChecked(false);
-        this.cboxPolitica = (RadioButton) v.findViewById(R.id.politica);
+        this.cboxPolitica = (CheckBox) v.findViewById(R.id.politica);
         this.cboxPolitica.setChecked(false);
-        this.cboxMundo = (RadioButton) v.findViewById(R.id.mundo);
+        this.cboxMundo = (CheckBox) v.findViewById(R.id.mundo);
         this.cboxMundo.setChecked(false);
-        this.cboxSociedad = (RadioButton) v.findViewById(R.id.sociedad);
+        this.cboxSociedad = (CheckBox) v.findViewById(R.id.sociedad);
         this.cboxSociedad.setChecked(false);
         this.listaChecked =  new JSONArray();
 
