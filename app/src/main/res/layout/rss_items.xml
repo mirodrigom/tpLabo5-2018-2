@@ -12,25 +12,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.AppCompatRadioButton
+            <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Lo Ultimo"
                 android:id="@+id/lo_ultimo"/>
 
-            <android.support.v7.widget.AppCompatRadioButton
+            <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Politica"
                 android:id="@+id/politica"/>
 
-            <android.support.v7.widget.AppCompatRadioButton
+            <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mundo"
                 android:id="@+id/mundo"/>
 
-            <android.support.v7.widget.AppCompatRadioButton
+            <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sociedad"

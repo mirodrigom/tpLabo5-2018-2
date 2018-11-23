@@ -22,9 +22,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Handler.Callback,SearchView.OnQueryTextListener,iMyDialog {
+public class MainActivity extends AppCompatActivity implements Handler.Callback,SearchView.OnQueryTextListener, iMyDialog {
 
     private List<Noticias> listaNoticias;
     private MyAdapter adapter;
@@ -36,17 +37,14 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         this.txtMain = (TextView) findViewById(R.id.txtMain);
         this.listaNoticias = new ArrayList<Noticias>();
         this.handler = new Handler(this);
-        this.comenzarHilo();
+        getPreferences();
         this.rv = (RecyclerView) findViewById(R.id.rv);
         this.adapter = new MyAdapter(this.listaNoticias,this);
         rv.setAdapter(this.adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
     private void getPreferences()
@@ -61,17 +59,21 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            for (int i = 0; i < listaChecked.length(); i++) {
-                try {
-                    JSONObject checkbox = listaChecked.getJSONObject(i);
-                    this.url = checkbox.names().get(0).toString().replace(" ","-").toLowerCase();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            if(listaChecked.length() == 0)
+            {
+                comenzarHilo("lo-ultimo");
+            }else{
+                for (int i = 0; i < listaChecked.length(); i++) {
+                    try {
+                        JSONObject checkbox = listaChecked.getJSONObject(i);
+                        String url = checkbox.names().get(0).toString().replace(" ","-").toLowerCase();
+                        Log.wtf("url",url);
+                        comenzarHilo(url);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-        }else {
-            this.url = "lo-ultimo";
         }
     }
 
@@ -102,8 +104,10 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
 
         if( msg.arg1 == 1) {
             if (msg.obj != null) {
-                this.adapter.setLista((List<Noticias>) msg.obj);
+                Log.wtf("Llego el request","hilo");
+                this.adapter.addLista((List<Noticias>) msg.obj);
                 this.adapter.setListaOriginal((List<Noticias>) msg.obj);
+                Collections.sort(this.adapter.getLista(),Collections.reverseOrder());
                 this.adapter.notifyDataSetChanged();
             }
         }else if( msg.arg1 == 2)
@@ -160,18 +164,23 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
         startActivity(i);
     }
 
-    @Override
-    public void onChangeRss(Boolean val) {
-        if(val == true)
-        {
-            this.comenzarHilo();
-        }
+    public void comenzarHilo(String url)
+    {
+        Log.wtf("Entro al hilo",url);
+        Hilos hiloUno = new Hilos(url,handler,"xml");
+        hiloUno.start();
     }
 
-    public void comenzarHilo()
-    {
-        getPreferences();
-        Hilos hiloUno = new Hilos(this.url,handler,"xml");
-        hiloUno.start();
+    @Override
+    public void onChangeRss(Boolean val, Boolean vacio) {
+        if(vacio == true)
+        {
+            this.adapter.setLista(new ArrayList<Noticias>());
+            this.adapter.notifyDataSetChanged();
+        }
+        if(val == true)
+        {
+            getPreferences();
+        }
     }
 }

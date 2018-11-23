@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ParserNoticias {
 
-    public static List<Noticias> getNoticias(String xmlString)
+    public static synchronized List<Noticias> getNoticias(String xmlString)
     {
         List<Noticias>listaNoticias = new ArrayList<Noticias>();
 

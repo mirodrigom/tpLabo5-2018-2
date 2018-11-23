@@ -42,8 +42,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.txtDescripcion.setText(this.listaNoticias.get(position).getDescripcion());
         holder.txtTitulo.setText(this.listaNoticias.get(position).getTitulo());
-
-
         holder.txtFecha.setText(this.listaNoticias.get(position).getFecha());
         holder.setPosition(position);
         //ImagenFuente
@@ -75,6 +73,42 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>
         this.listaNoticias = lista;
     }
 
+    public void addLista(List<Noticias> list)
+    {
+
+        for (Noticias noticiaNueva:list)
+        {
+            if(this.listaNoticias.indexOf(noticiaNueva) == -1)
+            {
+                this.listaNoticias.add(noticiaNueva);
+            }
+        }
+    }
+            /*
+            boolean flag = false;
+            Noticia = null;
+            if(! this.listaNoticias.isEmpty())
+            {
+                for(Noticias noticiaVieja: this.listaNoticias)
+                {
+                    if(noticiaVieja == noticiaNueva)
+                    {
+                        flag = true;
+                        break;
+                    }else{
+                        Noticia = noticiaNueva;
+                    }
+                }
+            }else{
+                this.listaNoticias.add(noticiaNueva);
+            }
+            if(Noticia != null && flag == false)
+            {
+                this.listaNoticias.add(noticiaNueva);
+            }
+        }
+    }
+*/
     public void setListaOriginal(List<Noticias> lista )
     {
         this.listaOriginal = lista;

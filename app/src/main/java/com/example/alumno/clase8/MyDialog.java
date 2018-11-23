@@ -155,11 +155,15 @@ public class MyDialog extends DialogFragment implements Dialog.OnClickListener {
 
 
             setSharedPreferences(this.listaChecked);
-            this.listenerDialog.onChangeRss(true);
-
+            if(this.listaChecked.length() == 0)
+            {
+                this.listenerDialog.onChangeRss(true,true);
+            }else{
+                this.listenerDialog.onChangeRss(true,false);
+            }
         }else if(which == Dialog.BUTTON_NEGATIVE)
         {
-            this.listenerDialog.onChangeRss(false);
+            this.listenerDialog.onChangeRss(false,false);
         }
     }
 

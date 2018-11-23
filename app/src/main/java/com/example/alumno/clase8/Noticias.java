@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by alumno on 01/11/2018.
  */
 
-public class Noticias {
+public class Noticias implements Comparable {
     private String titulo;
     private String descripcion;
     private String imageUrl;
@@ -162,5 +162,23 @@ public class Noticias {
 
     public void setRssLista(String[] rssLista) {
         this.rssLista = rssLista;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        Noticias noti = (Noticias) obj;
+        if(this.titulo.equalsIgnoreCase(noti.titulo))
+        {
+            return true;
+        }
+            return false;
+    }
+
+
+    @Override
+    public int compareTo(Object o) {
+        Noticias noti = (Noticias) o;
+        return getFecha().compareTo(noti.getFecha());
     }
 }
