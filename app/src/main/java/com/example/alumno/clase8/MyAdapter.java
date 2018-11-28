@@ -54,6 +54,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>
         {
             if(this.listaNoticias.get(position).getImageByte() == null)
             {
+
                 Hilos hiloImagen = new Hilos(this.listaNoticias.get(position).getImageUrl(),this.handler,"img",position);
                 hiloImagen.start();
             }else{

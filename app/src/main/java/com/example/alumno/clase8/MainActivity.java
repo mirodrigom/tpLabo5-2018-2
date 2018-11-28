@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
         this.txtMain = (TextView) findViewById(R.id.txtMain);
         this.listaNoticias = new ArrayList<Noticias>();
         this.handler = new Handler(this);
-        getPreferences();
         this.rv = (RecyclerView) findViewById(R.id.rv);
+        getPreferences();
         this.adapter = new MyAdapter(this.listaNoticias,this);
         rv.setAdapter(this.adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
                 this.adapter.addLista((List<Noticias>) msg.obj);
                 this.adapter.setListaOriginal((List<Noticias>) msg.obj);
                 Collections.sort(this.adapter.getLista(),Collections.reverseOrder());
+                Log.wtf("Cantidad noticias:",String.valueOf(this.adapter.getLista().size()));
                 this.adapter.notifyDataSetChanged();
             }
         }else if( msg.arg1 == 2)
@@ -173,9 +174,11 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
 
     @Override
     public void onChangeRss(Boolean val, Boolean vacio) {
+
+        this.adapter.setLista(new ArrayList<Noticias>());
+
         if(vacio == true)
         {
-            this.adapter.setLista(new ArrayList<Noticias>());
             this.adapter.notifyDataSetChanged();
         }
         if(val == true)
